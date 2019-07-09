@@ -1,0 +1,52 @@
+
+- name: Ensure the bastion host has the scap-security-guide package installed
+  hosts: localhost
+  become: true
+  tasks:
+    - name: check latest scap-security-guide is installed
+      package:
+        name: scap-security-guide
+        state: latest
+
+- name: Perform an OpenSCAP scan against specific hosts
+  hosts: all
+  become: true
+  tasks:
+    - name: create a temp dir for the scan
+      tempfile:
+        state: directory
+        suffix: scap
+      register: temp
+
+    - name: push the required files to the host
+      copy:
+        src: "{{ item }}"
+        dest: "{{ temp.path }}"
+      loop:
+        - ssg-rhel7-e8-tailoring-file.xml
+        - /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
+
+    - name: check openscap is installed
+      yum:
+        name: openscap
+        state: latest
+
+    # The 'oscap eval xccdf' command returns 0 if - and only if - all SCAP checks pass. Else, it returns a non-zero exit 
+    # code, and Ansible thinks the command has failed. 
+    # As we want the command to complete anyway, we simply or this with 'true'
+    - name: run an openscap scan
+      shell: "oscap xccdf eval --fetch-remote-resources --profile xccdf_com.redhat.apac_profile_aus_essential_eight --tailoring-file {{ temp.path }}/ssg-rhel7-e8-tailoring-file.xml  --results-arf {{ temp.path }}/results.xml {{ temp.path }}/ssg-rhel7-ds.xml || true"
+
+    - name: create an html report
+      shell: "oscap xccdf generate report {{ temp.path }}/results.xml > {{ temp.path }}/{{ ansible_fqdn }}.html"
+
+    - name: retrieve the html report
+      fetch:
+        src: "{{ temp.path }}/{{ ansible_fqdn }}.html" 
+        dest: "/tmp/{{ ansible_fqdn }}.html"
+        flat: yes
+
+    - name: cleanup the temp dir
+      file:
+      path: "{{ temp.path }}"
+      state: absent
