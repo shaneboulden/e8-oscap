@@ -4760,26 +4760,12 @@
         - CCE-80188-6
         - NIST-800-53-AU-4(1)
         - NIST-800-53-AU-12
-    
-    - name: Fail if user is not root
-      fail:
-        msg: Root account required to read root $PATH
-      when: ansible_user != "root"
-      tags:
-        - accounts_root_path_dirs_no_write
-        - medium_severity
-        - restrict_strategy
-        - low_complexity
-        - medium_disruption
-        - no_reboot_needed
-        - CCE-80200-9
-        - NIST-800-53-CM-6(b)
-    
+
     - name: Get root paths which are not symbolic links
       shell: 'set -o pipefail
-    
+
         tr ":" "\n" <<< "$PATH" | xargs -I% find % -maxdepth 0 -type d
-    
+
         '
       args:
         warn: false
@@ -4787,7 +4773,6 @@
       changed_when: false
       failed_when: false
       register: root_paths
-      when: ansible_user == "root"
       check_mode: false
       tags:
         - accounts_root_path_dirs_no_write
@@ -4798,7 +4783,7 @@
         - no_reboot_needed
         - CCE-80200-9
         - NIST-800-53-CM-6(b)
-    
+
     - name: Disable writability to root directories
       file:
         path: '{{ item }}'
@@ -4813,7 +4798,7 @@
         - medium_disruption
         - no_reboot_needed
         - CCE-80200-9
-        - NIST-800-53-CM-6(b)
+        - NIST-800-53-CM-6(b) 
     
     - name: Prevent Log In to Accounts With Empty Password - system-auth
       replace:
