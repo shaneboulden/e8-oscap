@@ -85,9 +85,6 @@
 -a always,exit -F path=/usr/lib/polkit-1/polkit-agent-helper-1 -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged
 -a always,exit -F path=/usr/lib/polkit-1/polkit-agent-helper-1 -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
 -a always,exit -F path=/usr/lib/polkit-1/polkit-agent-helper-1 -F perm=x -F auid>=1000 -F auid!=unset -k privileged
--a always,exit -F path=/usr/local/bin/exploitme -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged
--a always,exit -F path=/usr/local/bin/exploitme -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
--a always,exit -F path=/usr/local/bin/exploitme -F perm=x -F auid>=1000 -F auid!=unset -k privileged
 -a always,exit -F path=/usr/sbin/netreport -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged
 -a always,exit -F path=/usr/sbin/netreport -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
 -a always,exit -F path=/usr/sbin/netreport -F perm=x -F auid>=1000 -F auid!=unset -k privileged
