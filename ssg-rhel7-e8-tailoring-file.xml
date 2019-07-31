@@ -10,7 +10,7 @@ Standard System Security profile, providing system hardening for Red Hat Enterpr
     <xccdf:select idref="xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated" selected="true"/>
     <xccdf:select idref="xccdf_org.ssgproject.content_rule_rpm_verify_permissions" selected="true"/>
     <xccdf:select idref="xccdf_org.ssgproject.content_rule_rpm_verify_hashes" selected="true"/>
-    <xccdf:select idref="xccdf_org.ssgproject.content_rule_security_patches_up_to_date" selected="true"/>
+    <xccdf:select idref="xccdf_org.ssgproject.content_rule_security_patches_up_to_date" selected="false"/>
     <xccdf:select idref="xccdf_org.ssgproject.content_rule_no_empty_passwords" selected="true"/>
     <xccdf:select idref="xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_sgid" selected="true"/>
     <xccdf:select idref="xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_suid" selected="true"/>
